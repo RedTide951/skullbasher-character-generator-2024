@@ -42,8 +42,7 @@ const CharacterGenerator = () => {
   const faithOptions = ['St. Terragnis', 'Ord The Wise', 'Gede', 'Madeera The Covenant', 'Shune The Vile', 'Raamlat The Pillager', 'The Lost'];
 
   return (
-    <Grid container spacing={2}>
-
+    <Grid container spacing={2} padding={1}>
       {/* Character Name */}
       <Grid item xs={12}>
         <TextField
@@ -55,7 +54,6 @@ const CharacterGenerator = () => {
       </Grid>
 
       {/* Title and Background */}
-      <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
             label="Title"
@@ -72,10 +70,8 @@ const CharacterGenerator = () => {
               fullWidth
             />
           </Grid>
-      </Grid>
 
         {/* Class and Faith Dropdowns */}
-        <Grid container spacing={2}>
             <Grid item xs={6}>
             <FormControl fullWidth>
             <InputLabel id="class-label">Class</InputLabel>
@@ -109,6 +105,25 @@ const CharacterGenerator = () => {
             </Select>
             </FormControl>
             </Grid>
+
+      {/* Hit Points and defense */}
+        
+        <Grid item xs={6}>
+          <TextField
+          label="Hit Points"
+          value={hitPoints}
+          InputProps={{ readOnly: true }}
+          fullWidth
+          />
+        </Grid>
+        
+        <Grid item xs={6}>
+         <TextField
+          label="Defense"
+          value={defense}
+          InputProps={{ readOnly: true }}
+          fullWidth
+          />
         </Grid>
 
       {/* Ability Scores */}
@@ -122,7 +137,7 @@ const CharacterGenerator = () => {
         { label: 'Willpower', value: willpower, setter: setWillpower },
         { label: 'Charisma', value: charisma, setter: setCharisma }
       ].map((stat, index) => (
-        <Grid item xs={6} key={index}>
+        <Grid item xs={3} key={index}>
           <TextField
             label={stat.label}
             value={`${stat.value} (${calculateModifier(stat.value) >= 0 ? `+${calculateModifier(stat.value)}` : calculateModifier(stat.value)})`}
@@ -135,27 +150,7 @@ const CharacterGenerator = () => {
         </Grid>
       ))}
 
-      {/* Hit Points */}
-      <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <TextField
-          label="Hit Points"
-          value={hitPoints}
-          InputProps={{ readOnly: true }}
-          fullWidth
-        />
-      </Grid>
-
-      {/* Defense */}
-      <Grid item xs={6}>
-        <TextField
-          label="Defense"
-          value={defense}
-          InputProps={{ readOnly: true }}
-          fullWidth
-        />
-      </Grid>
-      </Grid>
+    
 
       {/* Generate New Character */}
       <Grid item xs={12}>
