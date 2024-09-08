@@ -163,15 +163,24 @@ const classOptions = [
   "Witch",
   "Bard",
   "Ranger",
-  "Crusader",
-  "Tinkerer",
-  "Druid",
   "Warlock",
 ];
 const classInfo = {
   Warrior:
     "Blood-soaked gladiators in dented armor, who carve their legends with steel and grit.",
-  Cleric: "Devout healers, serving the divine.",
+  Cleric:
+    "Crusading templars, prophetic shamans, or mad-eyed zealots who wield the power of their gods to cleanse the unholy.",
+  Thief:
+    "Rooftop assassins, grinning con artists, or cloaked cat burglars who can pluck a gem from the claws of a sleeping demon and sell it for twice its worth",
+  Wizard:
+    "Rune-tattooed adepts, bespectacled magi, and flameconjuring witches who dare to manipulate the fell forces of magic.",
+  Ranger:
+    "Skilled trackers, stealthy wanderers, and peerless warriors who call the wilds their home.",
+  Bard: "Howling warriors with sharpened teeth, wild-eyed doomspeakers preaching of The Dissolution, and cloaked lore-hunters bearing the hidden Mark of Shune.",
+  Warlock:
+    "Howling warriors with sharpened teeth, wild-eyed doomspeakers preaching of The Dissolution, and cloaked lore-hunters bearing the hidden Mark of Shune.",
+  Witch:
+    "Cackling crones stooped over cauldrons, chanting shamans smeared in blood and clay, and outcast maidens with milky eyes that see portents and secrets.",
 };
 
 const faithOptions = [
@@ -230,7 +239,44 @@ const CharacterGenerator = () => {
       calculateModifier(constitution) +
       Math.max(calculateModifier(willpower), 0)
   );
+
   const defense = 10 + calculateModifier(agility);
+
+  const handleGenerateNewCharacter = () => {
+    // Generate new values for all states
+    const newName = randomName();
+    const newBackground = randomBackground();
+    const newStrength = roll3d6();
+    const newDexterity = roll3d6();
+    const newAgility = roll3d6();
+    const newConstitution = roll3d6();
+    const newWits = roll3d6();
+    const newIntelligence = roll3d6();
+    const newWillpower = roll3d6();
+    const newCharisma = roll3d6();
+    const newFaith =
+      faithOptions[Math.floor(Math.random() * faithOptions.length)];
+    const newClass =
+      classOptions[Math.floor(Math.random() * classOptions.length)];
+
+    // Update all states
+    setName(newName);
+    setBackground(newBackground);
+    setStrength(newStrength);
+    setDexterity(newDexterity);
+    setAgility(newAgility);
+    setConstitution(newConstitution);
+    setWits(newWits);
+    setIntelligence(newIntelligence);
+    setWillpower(newWillpower);
+    setCharisma(newCharisma);
+    setFaith(newFaith);
+    setCharacterClass(newClass);
+
+    // Update descriptions based on the new values
+    setClassDescription(classInfo[newClass]);
+    setFaithDescription(faithInfo[newFaith]);
+  };
 
   const handleClassChange = (event) => {
     const selectedClass = event.target.value;
@@ -249,6 +295,7 @@ const CharacterGenerator = () => {
       {/* Character Name */}
       <Grid item xs={12}>
         <TextField
+          variant="filled"
           label="Character Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -259,6 +306,7 @@ const CharacterGenerator = () => {
       {/* Title and Background */}
       <Grid item xs={6}>
         <TextField
+          variant="filled"
           label="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -267,6 +315,7 @@ const CharacterGenerator = () => {
       </Grid>
       <Grid item xs={6}>
         <TextField
+          variant="filled"
           label="Background"
           value={background}
           onChange={(e) => setBackground(e.target.value)}
@@ -279,6 +328,7 @@ const CharacterGenerator = () => {
         <FormControl fullWidth>
           <InputLabel id="class-label">Class</InputLabel>
           <Select
+            variant="filled"
             labelId="class-label"
             value={characterClass}
             onChange={handleClassChange} // Updated to use the handler
@@ -297,6 +347,7 @@ const CharacterGenerator = () => {
         <FormControl fullWidth>
           <InputLabel id="faith-label">Faith</InputLabel>
           <Select
+            variant="filled"
             labelId="faith-label"
             value={faith}
             onChange={handleFaithChange} // Updated to use the handler
@@ -315,9 +366,9 @@ const CharacterGenerator = () => {
         <Card>
           <CardContent>
             <Typography
+              variant="filled"
               variant="body1"
               style={{
-                fontFamily: "Caslon Antique",
                 fontSize: "0.7em",
                 textAlign: "Left",
               }}
@@ -333,9 +384,9 @@ const CharacterGenerator = () => {
         <Card>
           <CardContent>
             <Typography
+              variant="filled"
               variant="body1"
               style={{
-                fontFamily: "Caslon Antique",
                 fontSize: "0.7em",
                 textAlign: "Left",
               }}
@@ -350,6 +401,7 @@ const CharacterGenerator = () => {
 
       <Grid item xs={6}>
         <TextField
+          variant="filled"
           label="Hit Points"
           value={hitPoints}
           InputProps={{ readOnly: true }}
@@ -359,6 +411,7 @@ const CharacterGenerator = () => {
 
       <Grid item xs={6}>
         <TextField
+          variant="filled"
           label="Defense"
           value={defense}
           InputProps={{ readOnly: true }}
@@ -379,6 +432,7 @@ const CharacterGenerator = () => {
       ].map((stat, index) => (
         <Grid item xs={3} key={index}>
           <TextField
+            variant="filled"
             label={stat.label}
             value={`${stat.value} (${
               calculateModifier(stat.value) >= 0
@@ -399,24 +453,7 @@ const CharacterGenerator = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => {
-            setName(randomName());
-            setBackground(randomBackground());
-            setStrength(roll3d6());
-            setDexterity(roll3d6());
-            setAgility(roll3d6());
-            setConstitution(roll3d6());
-            setWits(roll3d6());
-            setIntelligence(roll3d6());
-            setWillpower(roll3d6());
-            setCharisma(roll3d6());
-            setFaith(
-              faithOptions[Math.floor(Math.random() * faithOptions.length)]
-            );
-            setCharacterClass(
-              classOptions[Math.floor(Math.random() * classOptions.length)]
-            );
-          }}
+          onClick={handleGenerateNewCharacter}
         >
           Generate New Character
         </Button>

@@ -1,0 +1,19 @@
+.video-background {
+    position: fixed;   /* Fixed position to cover the entire screen always */
+    right: 0;
+    bottom: 0;
+    min-width: 100%;   /* Minimum width required to cover the screen */
+    min-height: 100%;  /* Minimum height required to cover the screen */
+    width: auto;       /* Maintain aspect ratio */
+    height: auto;      /* Maintain aspect ratio */
+    z-index: -1;       /* Keep the video behind all content */
+    background-size: cover; /* Cover the entire area */
+    overflow: hidden;  /* Prevent any overflow */
+  }
+  
+  .video-background video {
+    width: 100%;       /* Stretch to fill the container */
+    height: 100%;      /* Stretch to fill the container */
+    object-fit: cover; /* Cover the entire area without losing aspect ratio */
+  }
+  
