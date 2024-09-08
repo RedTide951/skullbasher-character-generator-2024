@@ -6,8 +6,6 @@ const Casing = () => {
   return (
     <Grid padding={2}>
         <CharacterGenerator />
-
-
     </Grid>
   )
 }
